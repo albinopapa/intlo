@@ -80,5 +80,55 @@ namespace chili
 
 int main()
 {
+	std::ifstream input("birthday.dat", std::ios::binary);
 
+	int data;
+	input.read(reinterpret_cast<char*>(&data), sizeof(int));
+
+	char data_buffer[256];
+	chili::int2str(data, data_buffer, 256);
+	chili::print(data_buffer);
+	chili::print("\n");
+	
+	std::ifstream in("derp.txt");
+	if (!in)
+	{
+		chili::print("\nFailed to open file");
+		while (!_kbhit());
+		return 0;
+	}
+	
+	in.seekg(0, std::ios_base::end);
+	const int length = in.tellg();
+
+	chili::print("\nFile size:");
+	char buffer[256];
+	chili::int2str(length, buffer, 256);
+	chili::print(buffer);
+	chili::print("\n\n");
+
+	in.seekg(0, std::ios_base::beg);
+
+	for( char c = in.get(); in.good(); c = in.get())
+	{
+		_putch(c);
+
+	}
+	if(in.bad())
+	{
+		chili::print("\n\n<<<FILE SYSTEM Totally Fucked Up!>>>");
+	}
+	else if (in.eof())
+	{
+		chili::print("\n\n<<<Reached end of file OK.>>>");
+	}
+	else
+	{
+		chili::print("\n\n<<<Some other failure occured?>>>");
+
+	}
+
+	while (!_kbhit());
+	return 0;
+	
 }
