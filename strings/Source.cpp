@@ -96,12 +96,26 @@ public:
 	{
 		value = int_in;
 	}
+	void printString() const
+	{
+		chili::print(*buffer);
+	}
+	int getValue() const
+	{
+		return value; 
+	}
 
 private:
 	int value = 0;
 	char* buffer[10] = { 0 };
 };
 
+enum Options
+{
+	Loading, 
+	Adding, 
+
+};
 
 
 int main()
@@ -134,10 +148,26 @@ int main()
 			++IndexPersons;
 			chili::print("\n");
 		}
+		if (_getch() == 'p')
+		{
+			for (int i = 0; i < IndexPersons; i++)
+			{	
+				chili::print("\n");
+				persons[i].printString();
+				chili::print("\t|");
+				for (int j = 0; j < persons[i].getValue(); j++)
+				{
+					chili::print("=");
+				}
+
+			}
+			chili::print("\n");
+		}
 		else if (_getch() == 'q')
 		{
 			IsRunning = false;
 		}
+
 	}
 	return 0;
 
