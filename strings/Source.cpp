@@ -113,8 +113,10 @@ private:
 enum Options
 {
 	Loading, 
+	Saving, 
 	Adding, 
-
+	Printing, 
+	Quitting, 
 };
 
 
@@ -131,9 +133,10 @@ int main()
 
 
 		chili::printStart();
-
-
-		if (_getch() == 'a')
+		char switcher = (_getch());
+		switch (switcher)
+		{
+		case 'a':
 		{
 
 			char ValBuffer[maxSize];
@@ -148,7 +151,8 @@ int main()
 			++IndexPersons;
 			chili::print("\n");
 		}
-		if (_getch() == 'p')
+		break; 
+		case 'p':
 		{
 			for (int i = 0; i < IndexPersons; i++)
 			{	
@@ -163,9 +167,12 @@ int main()
 			}
 			chili::print("\n");
 		}
-		else if (_getch() == 'q')
+		break;
+		case 'q':
 		{
 			IsRunning = false;
+		}
+		break;
 		}
 
 	}
