@@ -104,19 +104,23 @@ public:
 	{
 		return value; 
 	}
+	char* getBuffer()
+	{
+		return *buffer;
+	};
 
 private:
 	int value = 0;
-	char* buffer[10] = { 0 };
+	char* buffer[10];
 };
 
 enum Options
 {
-	Loading, 
-	Saving, 
-	Adding, 
-	Printing, 
-	Quitting, 
+	Loading = 108,
+	Saving = 115,
+	Adding = 97, 
+	Printing = 112, 
+	Quitting = 113 
 };
 
 
@@ -127,32 +131,34 @@ int main()
 	int IndexPersons = 0;
 	Person persons[20];
 	char NameBufferArray[maxSize][maxSize];
-
+	char switcher = -1;
 	while (IsRunning)
 	{
-
+		
 
 		chili::printStart();
-		char switcher = (_getch());
+		switcher = (_getch());
 		switch (switcher)
 		{
-		case 'a':
+		case Options::Adding:
 		{
+
+			chili::print("\nEnter Name:");
+			chili::read(NameBufferArray[IndexPersons], maxSize);
+			persons[IndexPersons].setString(NameBufferArray[IndexPersons]);
+			
 
 			char ValBuffer[maxSize];
 			chili::print("\nEnter Value:");
 			chili::read(ValBuffer, maxSize);
 			persons[IndexPersons].setValue(chili::str2int(ValBuffer));
 
-			
-			chili::print("\nEnter Name:");
-			chili::read(NameBufferArray[IndexPersons], maxSize);
-			persons[IndexPersons].setString(NameBufferArray[IndexPersons]);
 			++IndexPersons;
 			chili::print("\n");
+
 		}
 		break; 
-		case 'p':
+		case  Options::Printing:
 		{
 			for (int i = 0; i < IndexPersons; i++)
 			{	
@@ -168,7 +174,26 @@ int main()
 			chili::print("\n");
 		}
 		break;
-		case 'q':
+		 
+		case Options::Saving:
+		{
+			std::ofstream out("names.dat", std::ios::binary);
+			
+			out.write(reinterpret_cast<char*>(&persons), sizeof(persons));	
+			
+		}
+		break;
+
+		case Options::Loading:
+		{
+			std::ifstream in("names.dat", std::ios::binary);
+			in.read(reinterpret_cast<char*>(persons), sizeof(persons));
+
+			chili::print("loaded File success!");
+		}
+		break;
+
+		case  Options::Quitting:
 		{
 			IsRunning = false;
 		}
