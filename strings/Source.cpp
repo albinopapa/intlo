@@ -89,7 +89,7 @@ public:
 
 	void setString(char* s)
 	{
-		*buffer = s;
+		buffer = s;
 
 	}
 	void setValue(int int_in)
@@ -98,20 +98,20 @@ public:
 	}
 	void printString() const
 	{
-		chili::print(*buffer);
+		chili::print(buffer);
 	}
 	int getValue() const
 	{
 		return value; 
 	}
-	char* getBuffer()
+	char getBuffer()
 	{
 		return *buffer;
 	};
 
 private:
 	int value = 0;
-	char* buffer[10];
+	char* buffer;
 };
 
 enum Options
@@ -187,9 +187,17 @@ int main()
 		case Options::Loading:
 		{
 			std::ifstream in("names.dat", std::ios::binary);
-			in.read(reinterpret_cast<char*>(persons), sizeof(persons));
+			if (in.is_open()) 
+			{
+				in.read(reinterpret_cast<char*>(persons),sizeof (persons));
+				chili::print("\nloaded File success!");
+			}
+			else
+			{
+				chili::print("\nFailed to load file.");
+			}
 
-			chili::print("loaded File success!");
+			
 		}
 		break;
 
